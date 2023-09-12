@@ -41,16 +41,16 @@ const char *GetVersionString();
 
 /** Lots of different version numbers **/
 
-#define VERSIONSTR "1.0pre"
+#define VERSIONSTR "1.4.0"
 
 // The version as seen in the Windows resource
-#define RC_FILEVERSION 1,0,9999,0
-#define RC_PRODUCTVERSION 1,0,9999,0
+#define RC_FILEVERSION 1,4,0,0
+#define RC_PRODUCTVERSION 1,4,0,0
 #define RC_PRODUCTVERSION2 VERSIONSTR
 
 // These are for content versioning.
 #define VER_MAJOR 1
-#define VER_MINOR 0
+#define VER_MINOR 4
 #define VER_REVISION 0
 
 // These are for zscript versioning.
@@ -87,7 +87,7 @@ const char *GetVersionString();
 // SAVESIG should match SAVEVER.
 
 // extension for savegames
-#define SAVEGAME_EXT "zds"
+#define SAVEGAME_EXT "wds"
 
 // MINSAVEVER is the minimum level snapshot version that can be loaded.
 #define MINSAVEVER 4556
@@ -97,16 +97,16 @@ const char *GetVersionString();
 #define SAVEVER 4560
 
 // This is so that derivates can use the same savegame versions without worrying about engine compatibility
-#define GAMESIG "VKDOOM"
-#define BASEWAD "vkdoom.pk3"
+#define GAMESIG "GRIDDLE"
+#define BASEWAD "griddle.pk3"
 #define OPTIONALWAD "game_support.pk3"
 #define GZDOOM 1
 #define VR3D_ENABLED
 
 // More stuff that needs to be different for derivatives.
-#define GAMENAME "VKDoom"
-#define WGAMENAME L"VKDoom"
-#define GAMENAMELOWERCASE "vkdoom"
+#define GAMENAME "GriddleVK"
+#define WGAMENAME L"GriddleVK"
+#define GAMENAMELOWERCASE "griddlevk"
 //#define FORUM_URL "http://forum.zdoom.org/"
 //#define BUGS_FORUM_URL	"http://forum.zdoom.org/viewforum.php?f=2"
 
@@ -116,7 +116,7 @@ const char *GetVersionString();
 #define GAME_DIR ".config/" GAMENAMELOWERCASE
 #endif
 
-#define DEFAULT_DISCORD_APP_ID "951303644597325885"
+#define DEFAULT_DISCORD_APP_ID ""
 
 const int SAVEPICWIDTH = 216;
 const int SAVEPICHEIGHT = 162;

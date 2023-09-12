@@ -338,6 +338,7 @@ struct LevelInfo native
 	native readonly int flags2;
 	native readonly int flags3;
 	native readonly int vkdflags;
+	native readonly int wiflags;
 	native readonly String Music;
 	native readonly String LevelName;
 	native readonly String AuthorName;
@@ -348,8 +349,6 @@ struct LevelInfo native
 	native readonly double gravity;
 	native readonly double aircontrol;
 	native readonly int airsupply;
-	native readonly int compatflags;
-	native readonly int compatflags2;
 	native readonly name deathsequence;
 	native readonly int fogdensity;
 	native readonly int outsidefogdensity;
@@ -469,12 +468,14 @@ struct LevelLocals native
 	native readonly float pixelstretch;
 	native readonly float MusicVolume;
 	native name deathsequence;
-	native readonly int compatflags;
-	native readonly int compatflags2;
 	native readonly LevelInfo info;
 
 	native bool nousersave;
 	native bool noautomap;
+
+	native bool nototaltime;
+	native bool noautosaves;
+	native bool cutscenelevel;
 
 	native String GetUDMFString(int type, int index, Name key);
 	native int GetUDMFInt(int type, int index, Name key);

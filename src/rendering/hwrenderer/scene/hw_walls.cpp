@@ -2281,12 +2281,6 @@ void HWWall::Process(HWDrawInfo *di, FRenderState& state, seg_t *seg, sector_t *
 		auto tex = TexMan.GetGameTexture(seg->sidedef->GetTexture(side_t::mid), true);
 		if (tex != NULL && tex->isValid())
 		{
-			if (di->Level->i_compatflags & COMPATF_MASKEDMIDTEX)
-			{
-				auto rawtexid = TexMan.GetRawTexture(tex->GetID());
-				auto rawtex = TexMan.GetGameTexture(rawtexid);
-				if (rawtex) tex = rawtex;
-			}
 			texture = tex;
 		}
 		else texture = nullptr;

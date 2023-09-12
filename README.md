@@ -1,10 +1,11 @@
-## Welcome to VkDoom!
+# Welcome to the GriddleVK Engine
 
-VkDoom is a source port based on the DOOM engine with a focus on Vulkan and modern computers.
+## GriddleVK is an id Tech 1 centric source port for Waffle Iron Studios, Ltd.'s games 
+
+**GriddleVK** is a VKDoom fork that aims to better serve Waffle Iron Studio's freeware and commercial games.
 
 Please see license files for individual contributor licenses.
 
-Visit our [website](https://vkdoom.org) for more details.
-
 ### Licensed under the GPL v3
 ##### https://www.gnu.org/licenses/quick-guide-gplv3.en.html
+---

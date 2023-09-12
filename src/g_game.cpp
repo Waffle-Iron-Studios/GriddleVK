@@ -1161,7 +1161,10 @@ void G_Ticker ()
 			savedescription = "";
 			break;
 		case ga_autosave:
-			G_DoAutoSave ();
+			if (!(primaryLevel->wiflags & WIFLAGS_CUTSCENELEVEL || primaryLevel->wiflags & WIFLAGS_NOAUTOSAVES))
+			{
+				G_DoAutoSave();
+			}
 			gameaction = ga_nothing;
 			break;
 		case ga_loadgameplaydemo:

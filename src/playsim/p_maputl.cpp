@@ -1550,7 +1550,7 @@ void FPathTraverse::init(double x1, double y1, double x2, double y2, int flags, 
 	// Count is present to prevent a round off error
 	// from skipping the break statement.
 
-	bool compatible = (flags & PT_COMPATIBLE) && (Level->i_compatflags & COMPATF_HITSCAN);
+	bool compatible = (flags & PT_COMPATIBLE);
 		
 	// we want to use one list of checked actors for the entire operation
 	FBlockThingsIterator btit(Level);
@@ -1686,7 +1686,7 @@ FPathTraverse::~FPathTraverse()
 //
 int P_CheckFov(AActor* t1, AActor* t2, double fov)
 {
-	return absangle(t1->AngleTo(t2), t1->Angles.Yaw) <= DAngle::fromDeg(fov);
+	return absangle(t1->AngleTo(PARAM_NULLCHECK(t2,t2)), t1->Angles.Yaw) <= DAngle::fromDeg(fov);
 }
 
 DEFINE_ACTION_FUNCTION_NATIVE(AActor, CheckFov, P_CheckFov)

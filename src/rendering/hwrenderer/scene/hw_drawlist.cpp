@@ -674,7 +674,6 @@ SortNode * HWDrawList::DoSort(HWDrawInfo *di, FRenderState& state, SortNode * he
 //==========================================================================
 void HWDrawList::Sort(HWDrawInfo *di, FRenderState& state)
 {
-	reverseSort = !!(di->Level->i_compatflags & COMPATF_SPRITESORT);
     SortZ = di->Viewpoint.Pos.Z;
 	MakeSortList();
 	sorted = DoSort(di, state, drawctx->SortNodes[SortNodeStart]);

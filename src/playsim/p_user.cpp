@@ -119,7 +119,7 @@ ColorSetList ColorSets;
 PainFlashList PainFlashes;
 
 // [Nash] FOV cvar setting
-CUSTOM_CVAR(Float, fov, 90.f, CVAR_ARCHIVE | CVAR_USERINFO | CVAR_NOINITCALL)
+CUSTOM_CVAR(Float, fov, 100.f, CVAR_ARCHIVE | CVAR_USERINFO | CVAR_NOINITCALL)
 {
 	player_t *p = &players[consoleplayer];
 	p->SetFOV(fov);
@@ -1011,7 +1011,7 @@ void P_CheckPlayerSprite(AActor *actor, int &spritenum, DVector2 &scale)
 	}
 }
 
-CUSTOM_CVAR (Float, sv_aircontrol, 0.00390625f, CVAR_SERVERINFO|CVAR_NOSAVE|CVAR_NOINITCALL)
+CUSTOM_CVAR (Float, sv_aircontrol, 0.8f, CVAR_SERVERINFO|CVAR_NOSAVE|CVAR_NOINITCALL)
 {
 	primaryLevel->aircontrol = self;
 	primaryLevel->AirControlChanged ();

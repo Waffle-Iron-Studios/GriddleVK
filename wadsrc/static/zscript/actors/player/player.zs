@@ -53,6 +53,8 @@ class PlayerPawn : Actor
 	double		curBob;
 	double		prevBob;
 
+	int cutsceneskipcounter;
+
 	meta Name HealingRadiusType;
 	meta Name InvulMode;
 	meta Name Face;
@@ -85,11 +87,6 @@ class PlayerPawn : Actor
 	flagdef CanSuperMorph: PlayerFlags, 1;
 	flagdef CrouchableMorph: PlayerFlags, 2;
 	flagdef WeaponLevel2Ended: PlayerFlags, 3;
-
-	enum EPrivatePlayerFlags
-	{
-		PF_VOODOO_ZOMBIE = 1<<4,
-	}
 	
 	Default
 	{
@@ -782,16 +779,14 @@ class PlayerPawn : Actor
 		Super.Die (source, inflictor, dmgflags, MeansOfDeath);
 
 		if (player != NULL && player.mo == self) player.bonuscount = 0;
-		
-		// [RL0] To allow voodoo zombies, don't kill the player together with voodoo dolls if the compat flag is enabled
-		if (player != NULL && player.mo != self && !(Level.compatflags2 & COMPATF2_VOODOO_ZOMBIES))
+
+		if (player != NULL && player.mo != self)
 		{ // Make the real player die, too
 			player.mo.Die (source, inflictor, dmgflags, MeansOfDeath);
 		}
 		else
 		{
-			// [RL0] player.mo == self will always be true if COMPATF2_VOODOO_ZOMBIES is false, so there's no need to check the compatflag here too, just self
-			if (player != NULL && sv_weapondrop && player.mo == self)
+			if (player != NULL && sv_weapondrop)
 			{ // Voodoo dolls don't drop weapons
 				let weap = player.ReadyWeapon;
 				if (weap != NULL)
@@ -1037,7 +1032,7 @@ class PlayerPawn : Actor
 	{
 		let player = self.player;
 		UserCmd cmd = player.cmd;
-		bool totallyfrozen = player.IsTotallyFrozen();
+		bool totallyfrozen = player.IsTotallyFrozen() || level.cutscenelevel;
 
 		// [RH] Being totally frozen zeros out most input parameters.
 		if (totallyfrozen)
@@ -1616,12 +1611,6 @@ class PlayerPawn : Actor
 	{
 		let player = self.player;
 		UserCmd cmd = player.cmd;
-
-		// [RL0] Mark players that became zombies (this stays even if they 'revive' by healing, until a level change)
-		if((Level.compatflags2 & COMPATF2_VOODOO_ZOMBIES) && player.health <= 0 && player.mo.health > 0)
-		{
-			PlayerFlags |= PF_VOODOO_ZOMBIE;
-		}
 		
 		CheckFOV();
 
@@ -1644,6 +1633,28 @@ class PlayerPawn : Actor
 		// Handle crouching
 		CheckCrouch(totallyfrozen);
 		CheckMusicChange();
+
+		if (level.cutscenelevel && level.time % TICRATE == 0)
+		{
+			if (cmd.buttons & BT_USE)
+			{
+				cutsceneskipcounter++;
+
+				if (cutsceneskipcounter > 1)
+				{
+					cutsceneskipcounter = 0;
+					level.ExitLevel(0, false);
+					return;
+				}
+			}
+			else
+			{
+				cutsceneskipcounter--;
+
+				if (cutsceneskipcounter < 0)
+					cutsceneskipcounter = 0;
+			}
+		}
 
 		if (player.playerstate == PST_DEAD)
 		{
@@ -1705,9 +1716,6 @@ class PlayerPawn : Actor
 
 	void BringUpWeapon ()
 	{
-		// [RL0] Don't bring up weapon when in a voodoo zombie state
-		if(PlayerFlags & PF_VOODOO_ZOMBIE) return;
-
 		let player = self.player;
 		if (player.PendingWeapon == WP_NOCHANGE)
 		{
@@ -1988,7 +1996,7 @@ class PlayerPawn : Actor
 
 	override int GetMaxHealth(bool withupgrades) const
 	{
-		int ret = MaxHealth > 0? MaxHealth : ((Level.compatflags & COMPATF_DEHHEALTH)? 100 : deh.MaxHealth);
+		int ret = MaxHealth > 0? MaxHealth : deh.MaxHealth;
 		if (withupgrades) ret += stamina + BonusHealth;
 		return ret;
 	}
@@ -2023,19 +2031,6 @@ class PlayerPawn : Actor
 
 	void PlayerFinishLevel (int mode, int flags)
 	{
-		// [RL0] Handle player exit behavior for voodoo zombies
-		if(PlayerFlags & PF_VOODOO_ZOMBIE)
-		{
-			if(player.health > 0)
-			{
-				PlayerFlags &= ~PF_VOODOO_ZOMBIE;
-			}
-			else
-			{
-				bShootable = false;
-				bKilled = true;
-			}
-		}
 		Inventory item, next;
 		let p = player;
 
@@ -2111,7 +2106,7 @@ class PlayerPawn : Actor
 				let it = toDelete[i];
 				if (!it.bDestroyed)
 				{
-					item.DepleteOrDestroy();
+					it.DepleteOrDestroy();
 				}
 			}
 		}

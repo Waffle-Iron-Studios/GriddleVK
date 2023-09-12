@@ -596,12 +596,6 @@ public:
 		return p->camera == mo;
 	}
 
-	bool MBF21Enabled() const
-	{
-		// The affected features only are a problem with Doom format maps - the flag should have no effect in Hexen and UDMF format.
-		return !(i_compatflags2 & COMPATF2_NOMBF21) || maptype != MAPTYPE_DOOM;
-	}
-
 	int NumMapSections;
 
 	uint32_t		flags;
@@ -609,6 +603,8 @@ public:
 	uint32_t		flags3;
 
 	uint32_t		vkdflags;
+
+	uint32_t		wiflags;
 
 	uint32_t		fadeto;					// The color the palette fades to (usually black)
 	uint32_t		outsidefog;				// The fog for sectors with sky ceilings

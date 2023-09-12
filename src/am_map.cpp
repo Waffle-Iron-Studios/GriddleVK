@@ -1547,7 +1547,7 @@ void DAutomap::Ticker ()
 	if (!automapactive)
 		return;
 
-	if ((primaryLevel->vkdflags & VKDLEVELFLAG_NOAUTOMAP))
+	if ((primaryLevel->vkdflags & VKDLEVELFLAG_NOAUTOMAP) ||  (primaryLevel->wiflags & WIFLAGS_CUTSCENELEVEL))
 	{
 		AM_ToggleMap();
 		return;
